@@ -153,6 +153,14 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
             value={section.title}
             onChange={(e) => handleUpdateSection(section.id, { title: e.target.value })}
           />
+          <div className="flex items-center gap-2 mt-1">
+            <label className="text-xs text-slate-400">Cor do Título:</label>
+            <input
+              type="color"
+              value={section.styles.titleColor || section.styles.color || '#0f172a'}
+              onChange={e => handleUpdateSection(section.id, { styles: { ...section.styles, titleColor: e.target.value } })}
+            />
+          </div>
         </div>
          <div className="space-y-1.5">
           <label className="text-xs font-bold text-slate-500 uppercase">URL Imagem</label>
@@ -172,6 +180,22 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
           value={section.description}
           onChange={(e) => handleUpdateSection(section.id, { description: e.target.value })}
         ></textarea>
+        <div className="flex items-center gap-2 mt-1">
+          <label className="text-xs text-slate-400">Cor da Descrição:</label>
+          <input
+            type="color"
+            value={section.styles.descColor || '#222222'}
+            onChange={e => handleUpdateSection(section.id, { styles: { ...section.styles, descColor: e.target.value } })}
+          />
+        </div>
+      </div>
+      <div className="flex items-center gap-2 mt-1">
+        <label className="text-xs text-slate-400">Cor de Fundo:</label>
+        <input
+          type="color"
+          value={section.styles.backgroundColor || '#ffffff'}
+          onChange={e => handleUpdateSection(section.id, { styles: { ...section.styles, backgroundColor: e.target.value } })}
+        />
       </div>
     </div>
   );

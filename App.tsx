@@ -32,7 +32,7 @@ function App() {
   <div class="container">
     ${sections.map(section => {
       if (section.type === 'hero') {
-        return `<section><img src="${section.imageUrl}" alt="" /><h1 style="font-family:${section.styles.fontFamily};font-size:${section.styles.fontSize}px;color:${section.styles.color}">${section.title}</h1><p>${section.description}</p></section>`;
+        return `<section><img src="${section.imageUrl}" alt="" /><h1 style="font-family:${section.styles.fontFamily};font-size:${section.styles.fontSize}px;color:${section.styles.color};text-align:center;">${section.title}</h1><p style="text-align:center;">${section.description}</p></section>`;
       }
       if (section.type === 'content-block') {
         return `<section style="display:flex;flex-wrap:wrap;align-items:center;gap:32px;background:${section.styles.backgroundColor}">
@@ -75,7 +75,7 @@ function App() {
             </div>
             <div>
               <h1 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">
-                e-plus Builder
+                Builder Pages
               </h1>
               <p className="text-sm text-slate-500 dark:text-slate-400">
                 Crie e-plus para seus anúncios de forma rápida e fácil.

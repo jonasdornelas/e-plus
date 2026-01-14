@@ -28,10 +28,10 @@ function App() {
             </div>
             <div>
               <h1 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">
-                Builder Dashboard
+                Builder Pages
               </h1>
               <p className="text-sm text-slate-500 dark:text-slate-400">
-                Gerencie e organize as seções da sua Landing Page
+                Crie e-plus para seus anúncios de forma rápida e fácil.
               </p>
             </div>
           </div>
@@ -52,7 +52,7 @@ function App() {
               <span className="material-symbols-outlined text-sm">
                 rocket_launch
               </span>
-              Publicar Página
+              Exportar HTML
             </button>
           </div>
         </div>
@@ -75,7 +75,7 @@ function App() {
           <div className="flex flex-col items-center gap-4">
             <div className="flex items-center gap-2 text-primary font-bold">
               <span className="material-symbols-outlined">auto_fix_high</span>
-              <span>PageBuilder Pro</span>
+              <span>Page Builder</span>
             </div>
             <p className="text-sm text-slate-500">
               © 2024 Design System Editor. Drag, drop, duplicate, and publish.

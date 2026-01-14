@@ -17,9 +17,12 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
 
   const handleUpdateSection = (id: string, updates: Partial<Section>) => {
     setSections((prev) =>
-      prev.map((section) =>
-        section.id === id ? { ...section, ...updates } : section
-      )
+      prev.map((section) => {
+        if (section.id === id) {
+          return { ...section, ...updates } as Section;
+        }
+        return section;
+      })
     );
   };
 
@@ -290,11 +293,8 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
                     isLast={index === sections.length - 1}
                 />
                 <div className="p-5 relative">
-                    <h3 className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-4 flex items-center gap-2">
-                        <span className="material-symbols-outlined text-sm">
-                            {section.type === 'hero' ? 'branding_watermark' : section.type === 'content-block' ? 'article' : 'grid_view'}
-                        </span>
-                        {section.type === 'hero' ? 'Hero Banner' : section.type === 'content-block' ? 'Bloco de Conteúdo' : 'Grid de Features'}
+                    <h3 className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-4">
+                      {section.type === 'hero' ? 'HERO' : section.type === 'content-block' ? 'BLOCO' : 'GRID'}
                     </h3>
                     
                     {section.type === 'hero' && renderHeroEditor(section as HeroSection)}
@@ -312,18 +312,15 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
               <div className="p-4 bg-slate-50 dark:bg-slate-800 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 animate-in fade-in zoom-in duration-200">
                   <h3 className="text-sm font-bold text-slate-600 dark:text-slate-300 mb-3 text-center">Escolha o tipo de seção</h3>
                   <div className="grid grid-cols-3 gap-3">
-                      <button onClick={() => handleAddSection('hero')} className="flex flex-col items-center gap-2 p-3 bg-white dark:bg-slate-900 rounded-lg hover:ring-2 hover:ring-primary transition-all shadow-sm">
-                          <span className="material-symbols-outlined text-primary">branding_watermark</span>
-                          <span className="text-xs font-medium">Hero (Banner)</span>
-                      </button>
-                      <button onClick={() => handleAddSection('content-block')} className="flex flex-col items-center gap-2 p-3 bg-white dark:bg-slate-900 rounded-lg hover:ring-2 hover:ring-primary transition-all shadow-sm">
-                           <span className="material-symbols-outlined text-purple-500">article</span>
-                           <span className="text-xs font-medium">Bloco (Txt/Img)</span>
-                      </button>
-                      <button onClick={() => handleAddSection('features-grid')} className="flex flex-col items-center gap-2 p-3 bg-white dark:bg-slate-900 rounded-lg hover:ring-2 hover:ring-primary transition-all shadow-sm">
-                           <span className="material-symbols-outlined text-orange-500">grid_view</span>
-                           <span className="text-xs font-medium">Grid Features</span>
-                      </button>
+                        <button onClick={() => handleAddSection('hero')} className="flex flex-col items-center gap-2 p-3 bg-white dark:bg-slate-900 rounded-lg hover:ring-2 hover:ring-primary transition-all shadow-sm">
+                         <span className="text-xs font-medium">HERO</span>
+                        </button>
+                        <button onClick={() => handleAddSection('content-block')} className="flex flex-col items-center gap-2 p-3 bg-white dark:bg-slate-900 rounded-lg hover:ring-2 hover:ring-primary transition-all shadow-sm">
+                          <span className="text-xs font-medium">BLOCO</span>
+                        </button>
+                        <button onClick={() => handleAddSection('features-grid')} className="flex flex-col items-center gap-2 p-3 bg-white dark:bg-slate-900 rounded-lg hover:ring-2 hover:ring-primary transition-all shadow-sm">
+                          <span className="text-xs font-medium">GRID</span>
+                        </button>
                   </div>
                   <button onClick={() => setShowAddMenu(false)} className="w-full mt-3 text-xs text-slate-500 hover:text-red-500 py-2">Cancelar</button>
               </div>

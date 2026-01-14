@@ -120,10 +120,6 @@ function App() {
       <footer className="mt-12 py-12 border-t border-slate-200 dark:border-slate-800 text-center">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col items-center gap-4">
-            <div className="flex items-center gap-2 text-primary font-bold">
-              <span className="material-symbols-outlined">auto_fix_high</span>
-              <span>Page Builder</span>
-            </div>
             <p className="text-sm text-slate-500">
               © 2026 Aplicação para edição de páginas e exportação de HTML.
             </p>

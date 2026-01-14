@@ -3,6 +3,8 @@ export interface StyleState {
   fontSize: number;
   color: string;
   backgroundColor?: string;
+  titleColor?: string;
+  descColor?: string;
 }
 
 export type SectionType = 'hero' | 'content-block' | 'features-grid';

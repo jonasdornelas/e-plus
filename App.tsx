@@ -19,7 +19,35 @@ function App() {
 
   // Função para exportar HTML
   const exportHtml = () => {
-    const html = `<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n  <meta charset=\"UTF-8\" />\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n  <title>Landing Page Exportada</title>\n  <link href='https://fonts.googleapis.com/css?family=Inter:400,700|Roboto:400,700|Playfair+Display:400,700|Montserrat:400,700|Open+Sans:400,700&display=swap' rel='stylesheet'>\n  <style>body{margin:0;font-family:Inter,Roboto,Arial,sans-serif;background:#f8fafc;}.container{max-width:900px;margin:0 auto;padding:32px 16px;}img{max-width:100%;border-radius:12px;}h1,h2,h3,h4{margin:0 0 16px 0;}section{margin-bottom:48px;background:#fff;border-radius:16px;box-shadow:0 2px 8px #0001;padding:32px;}.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;}.feature-item{background:#f1f5f9;border-radius:12px;padding:20px;text-align:center;}</style>\n</head>\n<body>\n  <div class=\"container\">\n    ${sections.map(section => {\n      if (section.type === 'hero') {\n        return `<section><img src=\"${section.imageUrl}\" alt=\"\" /><h1 style=\"font-family:${section.styles.fontFamily};font-size:${section.styles.fontSize}px;color:${section.styles.color}\">${section.title}</h1><p>${section.description}</p></section>`;\n      }\n      if (section.type === 'content-block') {\n        return `<section style=\"display:flex;flex-wrap:wrap;align-items:center;gap:32px;background:${section.styles.backgroundColor}\">\n          <div style=\"flex:1;min-width:220px\"><h2 style=\"font-family:${section.styles.fontFamily};font-size:${section.styles.fontSize}px;color:${section.styles.color}\">${section.title}</h2><p>${section.description}</p></div>\n          <div style=\"flex:1;min-width:220px\"><img src=\"${section.imageUrl}\" alt=\"\" /></div>\n        </section>`;\n      }\n      if (section.type === 'features-grid') {\n        return `<section><h2 style=\"font-family:${section.styles.fontFamily};font-size:${section.styles.fontSize}px;color:${section.styles.color}\">${section.title}</h2><div class=\"features-grid\">${section.items.map(item => `<div class=\"feature-item\"><img src=\"${item.imageUrl}\" alt=\"\" /><h4>${item.title}</h4></div>`).join('')}</div></section>`;\n      }\n      return '';\n    }).join('')}\n  </div>\n</body>\n</html>`;
+    const html = `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Landing Page Exportada</title>
+  <link href='https://fonts.googleapis.com/css?family=Inter:400,700|Roboto:400,700|Playfair+Display:400,700|Montserrat:400,700|Open+Sans:400,700&display=swap' rel='stylesheet'>
+  <style>body{margin:0;font-family:Inter,Roboto,Arial,sans-serif;background:#f8fafc;}.container{max-width:900px;margin:0 auto;padding:32px 16px;}img{max-width:100%;border-radius:12px;}h1,h2,h3,h4{margin:0 0 16px 0;}section{margin-bottom:48px;background:#fff;border-radius:16px;box-shadow:0 2px 8px #0001;padding:32px;}.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;}.feature-item{background:#f1f5f9;border-radius:12px;padding:20px;text-align:center;}</style>
+</head>
+<body>
+  <div class="container">
+    ${sections.map(section => {
+      if (section.type === 'hero') {
+        return `<section><img src="${section.imageUrl}" alt="" /><h1 style="font-family:${section.styles.fontFamily};font-size:${section.styles.fontSize}px;color:${section.styles.color}">${section.title}</h1><p>${section.description}</p></section>`;
+      }
+      if (section.type === 'content-block') {
+        return `<section style="display:flex;flex-wrap:wrap;align-items:center;gap:32px;background:${section.styles.backgroundColor}">
+          <div style="flex:1;min-width:220px"><h2 style="font-family:${section.styles.fontFamily};font-size:${section.styles.fontSize}px;color:${section.styles.color}">${section.title}</h2><p>${section.description}</p></div>
+          <div style="flex:1;min-width:220px"><img src="${section.imageUrl}" alt="" /></div>
+        </section>`;
+      }
+      if (section.type === 'features-grid') {
+        return `<section><h2 style="font-family:${section.styles.fontFamily};font-size:${section.styles.fontSize}px;color:${section.styles.color}">${section.title}</h2><div class="features-grid">${section.items.map(item => `<div class="feature-item"><img src="${item.imageUrl}" alt="" /><h4>${item.title}</h4></div>`).join('')}</div></section>`;
+      }
+      return '';
+    }).join('')}
+  </div>
+</body>
+</html>`;
     const blob = new Blob([html], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');

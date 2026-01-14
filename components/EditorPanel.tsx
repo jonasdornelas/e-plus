@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Section, HeroSection, ContentBlockSection, FeaturesGridSection, FeatureItem } from "../types";
-import { StyleToolbar } from "./StyleToolbar";
+import { SectionCard } from "./SectionCard";
 
 interface EditorPanelProps {
   sections: Section[];
   setSections: React.Dispatch<React.SetStateAction<Section[]>>;
 }
 
+// Ensure the EditorPanel component returns a valid ReactNode
 export const EditorPanel: React.FC<EditorPanelProps> = ({
   sections,
   setSections,
@@ -236,7 +237,7 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
                  </button>
              </div>
         </div>
-    );
+      );
   };
 
   return (
@@ -304,64 +305,4 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
       </div>
     </div>
   );
-
-// Componente para cada seção com minimizar/maximizar e numeração
-import React, { useState as useSectionCardState } from "react";
-import { Section, HeroSection, ContentBlockSection, FeaturesGridSection } from "../types";
-import { StyleToolbar } from "./StyleToolbar";
-
-type SectionCardProps = {
-  section: Section;
-  index: number;
-  total: number;
-  onUpdateSection: (id: string, updates: Partial<Section>) => void;
-  onDuplicate: (section: Section) => void;
-  onDelete: (id: string) => void;
-  onMoveUp: () => void;
-  onMoveDown: () => void;
-  renderHeroEditor: (section: HeroSection) => React.ReactNode;
-  renderContentBlockEditor: (section: ContentBlockSection) => React.ReactNode;
-  renderFeaturesEditor: (section: FeaturesGridSection) => React.ReactNode;
 };
-
-export const SectionCard: React.FC<SectionCardProps> = ({
-  section, index, total, onUpdateSection, onDuplicate, onDelete, onMoveUp, onMoveDown,
-  renderHeroEditor, renderContentBlockEditor, renderFeaturesEditor
-}) => {
-  const [collapsed, setCollapsed] = useSectionCardState(false);
-  return (
-    <div className="section-card group bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm transition-all overflow-hidden">
-      <div className="flex items-center justify-between px-4 pt-3">
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-bold text-slate-400">{index + 1}.</span>
-          <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{section.type === 'hero' ? 'HERO' : section.type === 'content-block' ? 'BLOCO' : 'GRID'}</span>
-        </div>
-        <button
-          className="ml-2 p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400"
-          title={collapsed ? 'Expandir seção' : 'Recolher seção'}
-          onClick={() => setCollapsed((c) => !c)}
-        >
-          <span className="material-symbols-outlined text-base">{collapsed ? 'unfold_more' : 'unfold_less'}</span>
-        </button>
-      </div>
-      <StyleToolbar
-        styles={section.styles}
-        onUpdate={(newStyles) => onUpdateSection(section.id, { styles: newStyles })}
-        onDelete={() => onDelete(section.id)}
-        onDuplicate={() => onDuplicate(section)}
-        onMoveUp={onMoveUp}
-        onMoveDown={onMoveDown}
-        isFirst={index === 0}
-        isLast={index === total - 1}
-      />
-      {!collapsed && (
-        <div className="p-5 relative">
-          {section.type === 'hero' && renderHeroEditor(section as HeroSection)}
-          {section.type === 'content-block' && renderContentBlockEditor(section as ContentBlockSection)}
-          {section.type === 'features-grid' && renderFeaturesEditor(section as FeaturesGridSection)}
-        </div>
-      )}
-    </div>
-  );
-};
-

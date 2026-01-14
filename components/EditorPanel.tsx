@@ -156,14 +156,6 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
             value={section.title}
             onChange={(e) => handleUpdateSection(section.id, { title: e.target.value })}
           />
-          <div className="flex items-center gap-2 mt-1">
-            <label className="text-xs text-slate-400">Cor do Título:</label>
-            <input
-              type="color"
-              value={section.styles.titleColor || section.styles.color || '#0f172a'}
-              onChange={e => handleUpdateSection(section.id, { styles: { ...section.styles, titleColor: e.target.value } })}
-            />
-          </div>
         </div>
          <div className="space-y-1.5">
           <label className="text-xs font-bold text-slate-500 uppercase">URL Imagem</label>
@@ -183,22 +175,6 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
           value={section.description}
           onChange={(e) => handleUpdateSection(section.id, { description: e.target.value })}
         ></textarea>
-        <div className="flex items-center gap-2 mt-1">
-          <label className="text-xs text-slate-400">Cor da Descrição:</label>
-          <input
-            type="color"
-            value={section.styles.descColor || '#222222'}
-            onChange={e => handleUpdateSection(section.id, { styles: { ...section.styles, descColor: e.target.value } })}
-          />
-        </div>
-      </div>
-      <div className="flex items-center gap-2 mt-1">
-        <label className="text-xs text-slate-400">Cor de Fundo:</label>
-        <input
-          type="color"
-          value={section.styles.backgroundColor || '#ffffff'}
-          onChange={e => handleUpdateSection(section.id, { styles: { ...section.styles, backgroundColor: e.target.value } })}
-        />
       </div>
     </div>
   );
@@ -281,61 +257,111 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
 
       {sections.map((section, index) => (
         <React.Fragment key={section.id}>
-             <div className="section-card group bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm transition-all overflow-hidden">
-                <StyleToolbar
-                    styles={section.styles}
-                    onUpdate={(newStyles) => handleUpdateSection(section.id, { styles: newStyles })}
-                    onDuplicate={() => handleDuplicate(section)}
-                    onDelete={() => handleDelete(section.id)}
-                    onMoveUp={() => handleMove(index, 'up')}
-                    onMoveDown={() => handleMove(index, 'down')}
-                    isFirst={index === 0}
-                    isLast={index === sections.length - 1}
-                />
-                <div className="p-5 relative">
-                    <h3 className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-4">
-                      {section.type === 'hero' ? 'HERO' : section.type === 'content-block' ? 'BLOCO' : 'GRID'}
-                    </h3>
-                    
-                    {section.type === 'hero' && renderHeroEditor(section as HeroSection)}
-                    {section.type === 'content-block' && renderContentBlockEditor(section as ContentBlockSection)}
-                    {section.type === 'features-grid' && renderFeaturesEditor(section as FeaturesGridSection)}
-
-                </div>
-             </div>
-             <div className="drop-zone" title="Solte aqui para mover"></div>
+          <SectionCard
+            section={section}
+            index={index}
+            total={sections.length}
+            onUpdateSection={handleUpdateSection}
+            onDuplicate={handleDuplicate}
+            onDelete={handleDelete}
+            onMoveUp={() => handleMove(index, 'up')}
+            onMoveDown={() => handleMove(index, 'down')}
+            renderHeroEditor={renderHeroEditor}
+            renderContentBlockEditor={renderContentBlockEditor}
+            renderFeaturesEditor={renderFeaturesEditor}
+          />
+          <div className="drop-zone" title="Solte aqui para mover"></div>
         </React.Fragment>
       ))}
-
       <div className="relative">
-          {showAddMenu ? (
-              <div className="p-4 bg-slate-50 dark:bg-slate-800 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 animate-in fade-in zoom-in duration-200">
-                  <h3 className="text-sm font-bold text-slate-600 dark:text-slate-300 mb-3 text-center">Escolha o tipo de seção</h3>
-                  <div className="grid grid-cols-3 gap-3">
-                        <button onClick={() => handleAddSection('hero')} className="flex flex-col items-center gap-2 p-3 bg-white dark:bg-slate-900 rounded-lg hover:ring-2 hover:ring-primary transition-all shadow-sm">
-                         <span className="text-xs font-medium">HERO</span>
-                        </button>
-                        <button onClick={() => handleAddSection('content-block')} className="flex flex-col items-center gap-2 p-3 bg-white dark:bg-slate-900 rounded-lg hover:ring-2 hover:ring-primary transition-all shadow-sm">
-                          <span className="text-xs font-medium">BLOCO</span>
-                        </button>
-                        <button onClick={() => handleAddSection('features-grid')} className="flex flex-col items-center gap-2 p-3 bg-white dark:bg-slate-900 rounded-lg hover:ring-2 hover:ring-primary transition-all shadow-sm">
-                          <span className="text-xs font-medium">GRID</span>
-                        </button>
-                  </div>
-                  <button onClick={() => setShowAddMenu(false)} className="w-full mt-3 text-xs text-slate-500 hover:text-red-500 py-2">Cancelar</button>
-              </div>
-          ) : (
-            <button 
-                onClick={() => setShowAddMenu(true)}
-                className="w-full py-4 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-xl text-slate-400 hover:text-primary hover:border-primary hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-all flex flex-col items-center justify-center gap-1 group"
-            >
-                <span className="material-symbols-outlined text-3xl group-hover:scale-110 transition-transform">
-                add_circle_outline
-                </span>
-                <span className="font-semibold text-sm">Adicionar Nova Seção</span>
-            </button>
-          )}
+        {showAddMenu ? (
+          <div className="p-4 bg-slate-50 dark:bg-slate-800 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 animate-in fade-in zoom-in duration-200">
+            <h3 className="text-sm font-bold text-slate-600 dark:text-slate-300 mb-3 text-center">Escolha o tipo de seção</h3>
+            <div className="grid grid-cols-3 gap-3">
+              <button onClick={() => handleAddSection('hero')} className="flex flex-col items-center gap-2 p-3 bg-white dark:bg-slate-900 rounded-lg hover:ring-2 hover:ring-primary transition-all shadow-sm">
+                <span className="text-xs font-medium">HERO</span>
+              </button>
+              <button onClick={() => handleAddSection('content-block')} className="flex flex-col items-center gap-2 p-3 bg-white dark:bg-slate-900 rounded-lg hover:ring-2 hover:ring-primary transition-all shadow-sm">
+                <span className="text-xs font-medium">BLOCO</span>
+              </button>
+              <button onClick={() => handleAddSection('features-grid')} className="flex flex-col items-center gap-2 p-3 bg-white dark:bg-slate-900 rounded-lg hover:ring-2 hover:ring-primary transition-all shadow-sm">
+                <span className="text-xs font-medium">GRID</span>
+              </button>
+            </div>
+            <button onClick={() => setShowAddMenu(false)} className="w-full mt-3 text-xs text-slate-500 hover:text-red-500 py-2">Cancelar</button>
+          </div>
+        ) : (
+          <button
+            onClick={() => setShowAddMenu(true)}
+            className="w-full py-4 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-xl text-slate-400 hover:text-primary hover:border-primary hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-all flex flex-col items-center justify-center gap-1 group"
+          >
+            <span className="material-symbols-outlined text-3xl group-hover:scale-110 transition-transform">
+              add_circle_outline
+            </span>
+            <span className="font-semibold text-sm">Adicionar Nova Seção</span>
+          </button>
+        )}
       </div>
     </div>
   );
+
+// Componente para cada seção com minimizar/maximizar e numeração
+import React, { useState as useSectionCardState } from "react";
+import { Section, HeroSection, ContentBlockSection, FeaturesGridSection } from "../types";
+import { StyleToolbar } from "./StyleToolbar";
+
+type SectionCardProps = {
+  section: Section;
+  index: number;
+  total: number;
+  onUpdateSection: (id: string, updates: Partial<Section>) => void;
+  onDuplicate: (section: Section) => void;
+  onDelete: (id: string) => void;
+  onMoveUp: () => void;
+  onMoveDown: () => void;
+  renderHeroEditor: (section: HeroSection) => React.ReactNode;
+  renderContentBlockEditor: (section: ContentBlockSection) => React.ReactNode;
+  renderFeaturesEditor: (section: FeaturesGridSection) => React.ReactNode;
 };
+
+export const SectionCard: React.FC<SectionCardProps> = ({
+  section, index, total, onUpdateSection, onDuplicate, onDelete, onMoveUp, onMoveDown,
+  renderHeroEditor, renderContentBlockEditor, renderFeaturesEditor
+}) => {
+  const [collapsed, setCollapsed] = useSectionCardState(false);
+  return (
+    <div className="section-card group bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm transition-all overflow-hidden">
+      <div className="flex items-center justify-between px-4 pt-3">
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-bold text-slate-400">{index + 1}.</span>
+          <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{section.type === 'hero' ? 'HERO' : section.type === 'content-block' ? 'BLOCO' : 'GRID'}</span>
+        </div>
+        <button
+          className="ml-2 p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400"
+          title={collapsed ? 'Expandir seção' : 'Recolher seção'}
+          onClick={() => setCollapsed((c) => !c)}
+        >
+          <span className="material-symbols-outlined text-base">{collapsed ? 'unfold_more' : 'unfold_less'}</span>
+        </button>
+      </div>
+      <StyleToolbar
+        styles={section.styles}
+        onUpdate={(newStyles) => onUpdateSection(section.id, { styles: newStyles })}
+        onDelete={() => onDelete(section.id)}
+        onDuplicate={() => onDuplicate(section)}
+        onMoveUp={onMoveUp}
+        onMoveDown={onMoveDown}
+        isFirst={index === 0}
+        isLast={index === total - 1}
+      />
+      {!collapsed && (
+        <div className="p-5 relative">
+          {section.type === 'hero' && renderHeroEditor(section as HeroSection)}
+          {section.type === 'content-block' && renderContentBlockEditor(section as ContentBlockSection)}
+          {section.type === 'features-grid' && renderFeaturesEditor(section as FeaturesGridSection)}
+        </div>
+      )}
+    </div>
+  );
+};
+
